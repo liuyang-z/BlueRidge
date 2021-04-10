@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "ARM-CortexM4",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/gcc-arm-none-eabi/**"
+            ],
+            "defines": [
+                "__GNUC__",
+                "USE_HAL_DRIVER",
+                "STM32F407xx"
+            ],
+            "cStandard": "c11"
+        }
+    ],
+    "version": 4
+}
