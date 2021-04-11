@@ -56,10 +56,10 @@ BIN = $(CP) -O binary -S
 CPU = -mcpu=cortex-m4
 
 # fpu
-# NONE for Cortex-M0/M0+/M3
+FPU = -mfpu=fpv4-sp-d16
 
 # float-abi
-
+FLOAT-ABI = -mfloat-abi=hard
 
 # mcu
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
