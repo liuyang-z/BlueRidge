@@ -8,8 +8,9 @@
 			"type": "shell",
 			"command": "make.exe",
 			"args": [
-				"-j4"
-			]
+				"-j99"
+			],
+			"problemMatcher": []
 		},
 		{
 			"label": "clean",

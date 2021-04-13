@@ -89,6 +89,8 @@ C_INCLUDES =  \
 -ISrc/kernel/core \
 -ISrc/kernel/cmsis/Include \
 -ISrc/kernel/cmsis/Device/ST/STM32F4xx/Include \
+-ISrc/kernel/os/FreeRTOS/Source/include \
+-ISrc/kernel/os/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 -ISrc/kernel/hal-driver/Inc \
 -ISrc/kernel/hal-driver/Inc/Legacy \
 -ISrc/user/include
@@ -97,6 +99,15 @@ C_INCLUDES =  \
 # C sources
 C_SOURCES =  \
 Src/system_stm32f4xx.c \
+Src/kernel/os/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
+Src/kernel/os/FreeRTOS/Source/portable/MemMang/heap_4.c \
+Src/kernel/os/FreeRTOS/Source/croutine.c \
+Src/kernel/os/FreeRTOS/Source/event_groups.c \
+Src/kernel/os/FreeRTOS/Source/list.c \
+Src/kernel/os/FreeRTOS/Source/queue.c \
+Src/kernel/os/FreeRTOS/Source/stream_buffer.c \
+Src/kernel/os/FreeRTOS/Source/tasks.c \
+Src/kernel/os/FreeRTOS/Source/timers.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_rcc.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_rcc_ex.c \
@@ -111,6 +122,7 @@ Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ex.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ramfunc.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_gpio.c \
 Src/driver/gpio/led.c \
+Src/user/FreeRTOS.c \
 Src/user/stm32f4xx_hal_msp.c \
 Src/user/stm32f4xx_it.c \
 Src/user/user_main.c

@@ -65,45 +65,69 @@ void assert_failed(uint8_t *file, uint32_t line)
 }
 #endif /* USE_FULL_ASSERT */
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "../driver/gpio/led.h"
+
+void task_code(void *arg) {
+
+  led_cfg();
+
+  float tmath = 0.1;
+
+  for(;;) {
+    vTaskDelay(300);
+
+    tmath += 1.1;
+
+    if(led_stat(0)) {
+      led_act(0, 1);
+    } else {
+      led_act(0, 0);
+    }
+    LOGI("hello freertos...");
+  }
+}
+
+void task_recv(void *arg) {
+  for(;;) {
+
+
+    vTaskDelay(100);
+  }
+}
 
 int main(void) {
 
+  TaskHandle_t task_c;
+  TaskHandle_t task_v;
+
 	HAL_Init();
 	SystemClock_Config();
-	/*
-	 *  HELLO WORLD
-	 */
 
-	LOGI("hello jlink.\n");
-	LOGW("hello jlink.\n");
-	LOGE("hello jlink.\n");
+  xTaskCreate(
+    task_code,
+    "task code",
+    140,
+    NULL,
+    2,
+    &task_c
+  );
 
-	led_cfg();
+  xTaskCreate(
+    task_recv,
+    "task recv",
+    140,
+    NULL,
+    3,
+    &task_v
+  );
 
+  vTaskStartScheduler();
 
-int cnt = 0;
+  for(;;) {
 
-	while(1) {
-  LOGI("sys core clock: %d", HAL_RCC_GetHCLKFreq());
-
-		led_act(0, 0);
-		led_act(1, 1);
-		led_act(2, 0);
-		led_act(3, 1);
-
-    HAL_Delay(500);
-
-		led_act(0, 1);
-		led_act(1, 0);
-		led_act(2, 1);
-		led_act(3, 0);
-
-    HAL_Delay(500);
-
-
-	LOGI("hello jlink %d", cnt++);
-
-	}
+  }
 
 	return 0;
 }

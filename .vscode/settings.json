@@ -16,6 +16,21 @@
 		"segger_rtt_conf.h": "c",
 		"stm32f4xx_hal_gpio.h": "c",
 		"led.h": "c",
-		"stm32f4xx_hal_def.h": "c"
-	}
+		"stm32f4xx_hal_def.h": "c",
+		"freertos.h": "c",
+		"portable.h": "c",
+		"freertosconfig.h": "c",
+		"task.h": "c",
+		"portmacro.h": "c",
+		"array": "c",
+		"functional": "c",
+		"istream": "c",
+		"ostream": "c",
+		"tuple": "c",
+		"type_traits": "c",
+		"utility": "c",
+		"compare": "c",
+		"ranges": "c"
+	},
+	"git.ignoreLimitWarning": true
 }

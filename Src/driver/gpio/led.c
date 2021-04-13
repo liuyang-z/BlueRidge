@@ -82,4 +82,12 @@ void led_act(uint8_t led_idx, uint8_t status) {
 	}
 }
 
+int8_t led_stat(uint8_t led_idx) {
+	if(led_idx >= G_LED_MAX_CNT)
+		return -1;
+
+	led_t* led = &_G_LEDS[led_idx];
+	return HAL_GPIO_ReadPin(led->port, led->mio.Pin);
+}
+
 /* end of this file */

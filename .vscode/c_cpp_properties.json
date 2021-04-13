@@ -4,7 +4,8 @@
             "name": "ARM-CortexM4",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/gcc-arm-none-eabi/**"
+                "C:/gcc-arm-none-eabi/**",
+                "${workspaceFolder}/Src/kernel/os/FreeRTOS/Source/portable/GCC/ARM_CM4F"
             ],
             "defines": [
                 "__GNUC__",
