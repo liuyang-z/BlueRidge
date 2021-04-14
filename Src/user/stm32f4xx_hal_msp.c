@@ -21,55 +21,69 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "user_main.h"
-/* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes */
+static void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN TD */
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType        = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState              = RCC_HSE_ON;
+  RCC_OscInitStruct.PLL.PLLState          = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource         = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM              = 25;
+  RCC_OscInitStruct.PLL.PLLN              = 336;
+  RCC_OscInitStruct.PLL.PLLP              = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ              = 7;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource    = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider   = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider  = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider  = RCC_HCLK_DIV2;
 
-/* USER CODE END TD */
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
 
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN Define */
+#ifdef  USE_FULL_ASSERT
 
-/* USER CODE END Define */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */
 
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN Macro */
 
-/* USER CODE END Macro */
-
-/* Private variables ---------------------------------------------------------*/
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* External functions --------------------------------------------------------*/
-/* USER CODE BEGIN ExternalFunctions */
-
-/* USER CODE END ExternalFunctions */
-
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 /**
   * Initializes the Global MSP.
+  * _weak call from HAL_Init
   */
 void HAL_MspInit(void)
 {
-  /* USER CODE BEGIN MspInit 0 */
-
-  /* USER CODE END MspInit 0 */
 
   __HAL_RCC_SYSCFG_CLK_ENABLE();
   __HAL_RCC_PWR_CLK_ENABLE();
 
+  SystemClock_Config();
   /* System interrupt init*/
 
   /* USER CODE BEGIN MspInit 1 */
@@ -77,8 +91,5 @@ void HAL_MspInit(void)
   /* USER CODE END MspInit 1 */
 }
 
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
