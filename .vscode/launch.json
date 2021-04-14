@@ -14,6 +14,7 @@
             "device":"STM32F407ZG",
             "svdFile": "./STM32F407ZGTx.svd",
             "servertype": "jlink",
+			"rtos": "FreeRTOS",
 			"runToMain": true,
 			"preLaunchCommands": [
 				"monitor speed 12000"
