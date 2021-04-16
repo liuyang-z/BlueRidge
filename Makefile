@@ -20,6 +20,8 @@ TARGET = BlueRidge
 DEBUG = 1
 # optimization
 OPT = -Os
+# program run in ram?
+RUN_IN_RAM = 1
 
 
 #######################################
@@ -149,6 +151,12 @@ ASM_SOURCES += \
 Src/lib/Segger/RTT/SEGGER_RTT_ASM_ARMv7M.s
 endif
 
+ifeq ($(RUN_IN_RAM), 1)
+C_DEFS += \
+-DUSER_VECT_TAB_ADDRESS \
+-DVECT_TAB_SRAM
+endif
+
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
@@ -158,7 +166,11 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
+ifeq ($(RUN_IN_RAM), 1)
+LDSCRIPT = STM32F407ZGTx_RAM.ld
+else
 LDSCRIPT = STM32F407ZGTx_FLASH.ld
+endif
 
 # libraries
 LIBS = -lc -lm -lnosys
