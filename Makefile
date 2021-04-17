@@ -102,7 +102,7 @@ C_INCLUDES =  \
 C_SOURCES =  \
 Src/system_stm32f4xx.c \
 Src/kernel/os/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
-Src/kernel/os/FreeRTOS/Source/portable/MemMang/heap_4.c \
+Src/kernel/os/FreeRTOS/Source/portable/MemMang/heap_5.c \
 Src/kernel/os/FreeRTOS/Source/croutine.c \
 Src/kernel/os/FreeRTOS/Source/event_groups.c \
 Src/kernel/os/FreeRTOS/Source/list.c \

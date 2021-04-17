@@ -7,6 +7,9 @@
 #include "task.h"
 #include "../driver/gpio/led.h"
 
+
+void OS_Init( void );
+
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
@@ -31,7 +34,7 @@ void task_code(void *arg) {
 
 
     for ( ;; ) {
-        vTaskDelay(100);
+        vTaskDelay(50);
 
         if(led_stat(0)) {
         led_act(0, 1);
@@ -54,6 +57,8 @@ int main(void) {
     TaskHandle_t task_v;
 
     HAL_Init();
+
+    OS_Init();
 
     xTaskCreate(    task_code,
                     "task code",

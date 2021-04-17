@@ -64,7 +64,7 @@ extern "C" {
 #define configCPU_CLOCK_HZ                          SystemCoreClock
 #define configMAX_PRIORITIES                        ( 15 )
 #define configMINIMAL_STACK_SIZE                    ( ( unsigned short ) 120 )
-#define configTOTAL_HEAP_SIZE                       ( ( size_t ) ( 96 * 1024 ) )
+#define configTOTAL_HEAP_SIZE                       ( ( size_t ) ( 65 * 1024 ) )
 #define configMAX_TASK_NAME_LEN                     ( 10 )
 #define configIDLE_SHOULD_YIELD                     1
 #define configQUEUE_REGISTRY_SIZE                   0
@@ -78,6 +78,7 @@ extern "C" {
 #define configUSE_APPLICATION_TASK_TAG              0
 #define configUSE_COUNTING_SEMAPHORES               0
 #define configUSE_TICKLESS_IDLE                     0
+#define configUSE_CUSTUME_HEAP_TYPE                 5
 #define configNUM_THREAD_LOCAL_STORAGE_POINTERS     0
 
 /* The simple demo does not use any hook functions.  See

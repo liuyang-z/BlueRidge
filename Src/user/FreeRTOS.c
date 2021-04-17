@@ -3,6 +3,18 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+void OS_Init( void )
+{
+#if ( configUSE_CUSTUME_HEAP_TYPE == 5 )
+        HeapRegion_t xHeapRegions[] =
+        {
+            { ( uint8_t * ) 0x10000000UL, 0x10000 },
+            { NULL, 0 }
+        };
+        vPortDefineHeapRegions( xHeapRegions );
+#endif
+}
+
 #if ( configUSE_MALLOC_FAILED_HOOK == 1 )
 	void vApplicationMallocFailedHook( void )
 	{
@@ -94,10 +106,10 @@
     /**
      * task.h
      * <pre>void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer, StackType_t ** ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize ) </pre>
-     * 
-     * This function is used to provide a statically allocated block of memory to FreeRTOS to hold the Timer Task TCB.  This function is required when 
+     *
+     * This function is used to provide a statically allocated block of memory to FreeRTOS to hold the Timer Task TCB.  This function is required when
      * configSUPPORT_STATIC_ALLOCATION is set.  For more information see this URI: https://www.FreeRTOS.org/a00110.html#configSUPPORT_STATIC_ALLOCATION
-     * 
+     *
      * @param ppxTimerTaskTCBBuffer   A handle to a statically allocated TCB buffer
      * @param ppxTimerTaskStackBuffer A handle to a statically allocated Stack buffer for thie idle task
      * @param pulTimerTaskStackSize   A pointer to the number of elements that will fit in the allocated stack buffer
