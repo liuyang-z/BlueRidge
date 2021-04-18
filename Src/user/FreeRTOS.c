@@ -1,7 +1,9 @@
 
-#include "./include/FreeRTOSConfig.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "FreeRTOS_POSIX/pthread.h"
+
+#include "./include/user_main.h"
 
 void OS_Init( void )
 {
@@ -13,6 +15,31 @@ void OS_Init( void )
         };
         vPortDefineHeapRegions( xHeapRegions );
 #endif
+}
+
+void pthread_portal(void *arg) {
+    pthread_t thread_main;
+
+    pthread_create(&thread_main, NULL, user_main, NULL);
+
+    pthread_join(thread_main, NULL);
+
+    vTaskDelete(NULL);
+}
+
+int main(void) {
+
+    HAL_Init();
+    OS_Init();
+
+    xTaskCreate(pthread_portal, "pthread_portal", 160, NULL, 4, NULL);
+
+    vTaskStartScheduler();
+
+	/* never rech this line */
+    for( ;; );
+
+    return 0;
 }
 
 #if ( configUSE_MALLOC_FAILED_HOOK == 1 )

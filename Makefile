@@ -95,6 +95,9 @@ C_INCLUDES =  \
 -ISrc/kernel/os/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 -ISrc/kernel/hal-driver/Inc \
 -ISrc/kernel/hal-driver/Inc/Legacy \
+-ISrc/lib/include \
+-ISrc/lib/FreeRTOS-Plus-POSIX/include \
+-ISrc/lib/FreeRTOS-Plus-POSIX/include/portable \
 -ISrc/user/include
 
 
@@ -123,6 +126,17 @@ Src/kernel/hal-driver/Src/stm32f4xx_hal_flash.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ex.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ramfunc.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_gpio.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_mqueue.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_barrier.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_cond.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_mutex.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_sched.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_semaphore.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_timer.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_unistd.c \
+Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c \
 Src/driver/gpio/led.c \
 Src/user/FreeRTOS.c \
 Src/user/stm32f4xx_hal_msp.c \
@@ -140,15 +154,12 @@ CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
 
-C_INCLUDES += \
--ISrc/lib/
-
 C_SOURCES += \
-Src/lib/Segger/RTT/SEGGER_RTT_printf.c \
-Src/lib/Segger/RTT/SEGGER_RTT.c
+Src/lib/Segger_RTT/SEGGER_RTT_printf.c \
+Src/lib/Segger_RTT/SEGGER_RTT.c
 
 ASM_SOURCES += \
-Src/lib/Segger/RTT/SEGGER_RTT_ASM_ARMv7M.s
+Src/lib/Segger_RTT/SEGGER_RTT_ASM_ARMv7M.s
 endif
 
 ifeq ($(RUN_IN_RAM), 1)

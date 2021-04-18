@@ -1,29 +1,36 @@
 
+#include "FreeRTOS_POSIX/pthread.h"
+#include "FreeRTOS_POSIX/unistd.h"
+
 #include "kernel/core/_log.h"
 #include "driver/gpio/led.h"
 
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "../driver/gpio/led.h"
-
-
-void OS_Init( void );
-
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)
   {
+      /* loop infinity */
   }
-  /* USER CODE END Error_Handler_Debug */
 }
 
+size_t thread_test_exit = 0;
 
-void task_code(void *arg) {
+void* print_test(void *arg) {
+    int cnt = 0;
+    while( thread_test_exit == 0) {
+        LOGI("print test_%d", cnt++);
+        sleep(1);
+    }
 
+    return (NULL);
+}
+
+void* user_main(void *arg) {
+
+    pthread_t test_a;
+    pthread_t test_b;
     led_cfg();
 
     float a=2.1,b;
@@ -32,53 +39,30 @@ void task_code(void *arg) {
 	b=a*12;
 	a=b/3.3;
 
+    pthread_create(&test_a, NULL, print_test, NULL);
+    pthread_create(&test_b, NULL, print_test, NULL);
+
+    int cnt = 0;
 
     for ( ;; ) {
-        vTaskDelay(50);
+        sleep(1);
 
         if(led_stat(0)) {
-        led_act(0, 1);
+            led_act(0, 1);
         } else {
-        led_act(0, 0);
+            led_act(0, 0);
         }
-        LOGI("hello freertos...");
+
+        if(cnt++ == 10) {
+            thread_test_exit = 1;
+            break;
+        }
     }
-}
 
-void task_recv(void *arg) {
-    for ( ;; ) {
-        vTaskDelay(3000);
-    }
-}
+    pthread_join(test_b, NULL);
+    // pthread_join(test_a, NULL);
 
-int main(void) {
-
-    TaskHandle_t task_c;
-    TaskHandle_t task_v;
-
-    HAL_Init();
-
-    OS_Init();
-
-    xTaskCreate(    task_code,
-                    "task code",
-                    140,
-                    NULL,
-                    2,
-                    &task_c );
-
-    xTaskCreate(    task_recv,
-                    "task recv",
-                    140,
-                    NULL,
-                    3,
-                    &task_v );
-
-    vTaskStartScheduler();
-
-    for ( ;; );
-
-    return 0;
+    return (NULL);
 }
 
 /* end of this file. */
