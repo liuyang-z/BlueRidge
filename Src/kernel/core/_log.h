@@ -3,7 +3,7 @@
 #ifndef _LOG_H_
 #define _LOH_H_
 
-#include "../../lib/Segger/RTT/SEGGER_RTT.h"
+#include "Segger_RTT/SEGGER_RTT.h"
 
 #define LOG_DEBUG 1
 
