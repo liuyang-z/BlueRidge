@@ -21,7 +21,7 @@ DEBUG = 1
 # optimization
 OPT = -Os
 # program run in ram?
-RUN_IN_RAM = 1
+RUN_IN_RAM = 0
 
 
 #######################################
@@ -98,6 +98,7 @@ C_INCLUDES =  \
 -ISrc/lib/include \
 -ISrc/lib/FreeRTOS-Plus-POSIX/include \
 -ISrc/lib/FreeRTOS-Plus-POSIX/include/portable \
+-ISrc/driver \
 -ISrc/user/include
 
 
@@ -126,6 +127,8 @@ Src/kernel/hal-driver/Src/stm32f4xx_hal_flash.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ex.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ramfunc.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_gpio.c \
+Src/kernel/hal-driver/Src/stm32f4xx_ll_fsmc.c \
+Src/kernel/hal-driver/Src/stm32f4xx_hal_sram.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_mqueue.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_barrier.c \
@@ -138,6 +141,7 @@ Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_timer.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_unistd.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c \
 Src/driver/gpio/led.c \
+Src/driver/fsmc/sram.c \
 Src/user/FreeRTOS.c \
 Src/user/stm32f4xx_hal_msp.c \
 Src/user/stm32f4xx_it.c \
