@@ -5,6 +5,10 @@
 
 #include "./include/user_main.h"
 
+__weak void Hw_Init() {
+
+}
+
 void OS_Init( void )
 {
 #if ( configUSE_CUSTUME_HEAP_TYPE == 5 )
@@ -30,6 +34,7 @@ void pthread_portal(void *arg) {
 int main(void) {
 
     HAL_Init();
+	Hw_Init();
     OS_Init();
 
     xTaskCreate(pthread_portal, "pthread_portal", 160, NULL, 4, NULL);

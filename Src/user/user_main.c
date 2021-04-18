@@ -15,6 +15,11 @@ void Error_Handler(void)
   }
 }
 
+void Hw_Init() {
+    /* init led (gpio) */
+    led_cfg();
+}
+
 size_t thread_test_exit = 0;
 
 void* print_test(void *arg) {
@@ -31,7 +36,6 @@ void* user_main(void *arg) {
 
     pthread_t test_a;
     pthread_t test_b;
-    led_cfg();
 
     float a=2.1,b;
 
