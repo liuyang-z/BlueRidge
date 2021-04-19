@@ -12,7 +12,9 @@
                 "USE_HAL_DRIVER",
                 "STM32F407xx"
             ],
-            "cStandard": "c11"
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "gcc-arm"
         }
     ],
     "version": 4
