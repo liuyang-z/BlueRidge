@@ -142,9 +142,8 @@ Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_unistd.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c \
 Src/driver/gpio/led.c \
 Src/driver/fsmc/sram.c \
-Src/user/FreeRTOS.c \
-Src/user/stm32f4xx_hal_msp.c \
 Src/user/stm32f4xx_it.c \
+Src/user/bspInit.c \
 Src/user/user_main.c
 
 

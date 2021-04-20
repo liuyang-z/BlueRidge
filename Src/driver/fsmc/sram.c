@@ -1,4 +1,5 @@
 
+/* Include ************************************************************************/
 #include "./sram.h"
 
 #include "stm32f4xx.h"
@@ -6,13 +7,16 @@
 #include "kernel/hal-driver/Inc/stm32f4xx_hal_gpio.h"
 #include "kernel/hal-driver/Inc/stm32f4xx_hal_sram.h"
 
+/* Functions prototypes ***********************************************************/
+void Error_Handler(char *file, uint32_t line);
 
-__weak void Error_Handler() {
-
-}
-
+/* Global defines *****************************************************************/
 SRAM_HandleTypeDef hsram1;
 
+/* Hw_Sram_Init ********************************************************************
+*   IS61WV102416BLL SRAM 硬件初始化
+*	使用 STM32F4 片上 FSMC 接口，SRAM 地址映射到 BANK3 区域
+***********************************************************************************/
 void Hw_Sram_Init() {
 	FSMC_NORSRAM_TimingTypeDef Timing = {0};
 
@@ -46,7 +50,7 @@ void Hw_Sram_Init() {
 
 	if (HAL_SRAM_Init(&hsram1, &Timing, NULL) != HAL_OK)
 	{
-		Error_Handler( );
+		Error_Handler(__FILE__, __LINE__);
 	}
 }
 
