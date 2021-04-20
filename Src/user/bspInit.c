@@ -5,12 +5,12 @@
 #include "bspMap.h"
 #include "FreeRTOS_POSIX/pthread.h"
 
-#include "user_main.h"
 #include "driver/fsmc/sram.h"
 #include "driver/gpio/led.h"
 
 /* Functions prototypes ***********************************************************/
-void Error_Handler(char *file, uint32_t line);
+void    Error_Handler   (char *file, uint32_t line);
+void*   user_main       (void *arg);
 
 /* SystemClock_Config **************************************************************
 *   配置系统时钟，
@@ -78,7 +78,7 @@ void HAL_MspInit(void)
 /* OS_Init *************************************************************************
 *   操作系统初始化，主要包括 Heap 的初始化
 ***********************************************************************************/
-void OS_Init( void )
+static void OS_Init( void )
 {
 #if ( configUSE_CUSTUME_HEAP_TYPE == 5 )
 	vPortDefineHeapRegions( xHeapRegions );
@@ -90,7 +90,7 @@ void OS_Init( void )
 * 	此入口用于将 FreeRTOS 接口对用户隐藏
 *	进入 user_main() 之后的用户多线程、互斥信号量、队列等操作使用 POSIX 接口即可。
 ***********************************************************************************/
-void pthread_portal(void *arg) {
+static void pthread_portal(void *arg) {
     pthread_t thread_main;
 
     pthread_create(&thread_main, NULL, user_main, NULL);

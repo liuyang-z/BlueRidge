@@ -1,10 +1,9 @@
 
 /* Include ************************************************************************/
-#include "stm32f4xx.h"
-#include "FreeRTOS.h"
 #include "FreeRTOS_POSIX/pthread.h"
 #include "FreeRTOS_POSIX/unistd.h"
 
+#include "stm32f4xx.h"
 #include "kernel/core/_log.h"
 #include "driver/gpio/led.h"
 
