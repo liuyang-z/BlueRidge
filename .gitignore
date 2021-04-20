@@ -1,2 +1,8 @@
 
-/Build
+/Build/*.d
+/Build/*.o
+/Build/*.lst
+/Build/*.bin
+/Build/*.elf
+/Build/*.hex
+/Build/*.map
