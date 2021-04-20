@@ -9,7 +9,7 @@
 
 #if LOG_DEBUG
 
-/* Segger RTT ä¸æ”¯æŒæµ®ç‚¹æ•°æ‰“å° */
+/* Segger RTT ²»Ö§³Ö¸¡µãÊı´òÓ¡ */
 #define LOG_PROTO(type,color,format,...)            \
         SEGGER_RTT_printf(0,"  %s%s"format"\r\n%s", \
                           color,                    \
@@ -17,13 +17,13 @@
                           ##__VA_ARGS__,            \
                           RTT_CTRL_RESET)
 
-/* æ¸…å±*/
+/* ÇåÆÁ*/
 #define LOG_CLEAR() SEGGER_RTT_WriteString(0, "  "RTT_CTRL_CLEAR)
 
-/* æ— é¢œè‰²æ—¥å¿—è¾“å‡º */
+/* ÎŞÑÕÉ«ÈÕÖ¾Êä³ö */
 #define LOG(format,...) LOG_PROTO("","",format,##__VA_ARGS__)
 
-/* æœ‰é¢œè‰²æ ¼å¼æ—¥å¿—è¾“å‡º */
+/* ÓĞÑÕÉ«¸ñÊ½ÈÕÖ¾Êä³ö */
 #define LOGI(format,...) LOG_PROTO("I: ", RTT_CTRL_TEXT_BRIGHT_GREEN , format, ##__VA_ARGS__)
 #define LOGW(format,...) LOG_PROTO("W: ", RTT_CTRL_TEXT_BRIGHT_YELLOW, format, ##__VA_ARGS__)
 #define LOGE(format,...) LOG_PROTO("E: ", RTT_CTRL_TEXT_BRIGHT_RED   , format, ##__VA_ARGS__)
