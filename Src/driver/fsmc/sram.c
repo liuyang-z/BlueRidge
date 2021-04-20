@@ -1,7 +1,15 @@
+
 #include "./sram.h"
+
+#include "stm32f4xx.h"
 #include "kernel/hal-driver/Inc/stm32f4xx_hal_rcc.h"
 #include "kernel/hal-driver/Inc/stm32f4xx_hal_gpio.h"
 #include "kernel/hal-driver/Inc/stm32f4xx_hal_sram.h"
+
+
+__weak void Error_Handler() {
+
+}
 
 SRAM_HandleTypeDef hsram1;
 

@@ -5,20 +5,16 @@
 
 #include "./include/user_main.h"
 
-__weak void Hw_Init() {
-
-}
-
 void OS_Init( void )
 {
 #if ( configUSE_CUSTUME_HEAP_TYPE == 5 )
-        HeapRegion_t xHeapRegions[] =
-        {
-            { ( uint8_t * ) 0x10000000UL, 0x010000 },
-			{ ( uint8_t * ) 0x68000000UL, 0x200000 },
-            { NULL, 0 }
-        };
-        vPortDefineHeapRegions( xHeapRegions );
+	HeapRegion_t xHeapRegions[] =
+	{
+		{ ( uint8_t * ) 0x10000000UL, 0x010000 },
+		{ ( uint8_t * ) 0x68000000UL, 0x200000 },
+		{ NULL, 0 }
+	};
+	vPortDefineHeapRegions( xHeapRegions );
 #endif
 }
 
@@ -36,9 +32,6 @@ int main(void) {
 
 	/* initial chip clock */
     HAL_Init();
-
-	/* initial hardware periph */
-	Hw_Init();
 
 	/* initial os */
     OS_Init();
