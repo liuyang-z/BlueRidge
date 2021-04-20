@@ -1,15 +1,15 @@
-
+/* Include ********************************************************/
+#include "stm32f4xx.h"
+#include "FreeRTOS.h"
 #include "FreeRTOS_POSIX/pthread.h"
 #include "FreeRTOS_POSIX/unistd.h"
 
 #include "kernel/core/_log.h"
 #include "driver/gpio/led.h"
-#include "driver/fsmc/sram.h"
 
-#include "FreeRTOS.h"
-#include <memory.h>
-
-
+/* Error_Handler ***************************************************
+*   错误处理回调，通过 _weak 调用此函数
+*******************************************************************/
 void Error_Handler(void)
 {
   __disable_irq();
@@ -19,20 +19,17 @@ void Error_Handler(void)
   }
 }
 
-void Hw_Init() {
-    /* init led (gpio) */
-    led_cfg();
-
-    // init sram
-    Hw_Sram_Init();
-}
-
 size_t thread_test_exit = 0;
 struct led_s {
     int pos;
     int delay;
 };
 
+/* blink ***********************************************************
+*   Led 周期闪烁控制方法
+*   in: arg         struct led_s 指针
+*                   内部含有 led pos 和 闪烁周期等参数
+*******************************************************************/
 void* blink(void *arg) {
     struct led_s *led = (struct led_s *)arg;
 
@@ -50,6 +47,10 @@ void* blink(void *arg) {
     return (NULL);
 }
 
+/* user_main *******************************************************
+*   用户函数入口
+*   in: arg         NULL
+*******************************************************************/
 void* user_main(void *arg) {
 
     pthread_t blink_a;

@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file         stm32f4xx_hal_msp.c
@@ -17,10 +16,11 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
 #include "user_main.h"
+#include "driver/fsmc/sram.h"
+#include "driver/gpio/led.h"
 
 static void SystemClock_Config(void)
 {
@@ -80,15 +80,17 @@ void assert_failed(uint8_t *file, uint32_t line)
 void HAL_MspInit(void)
 {
 
-  __HAL_RCC_SYSCFG_CLK_ENABLE();
-  __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_RCC_SYSCFG_CLK_ENABLE();
+    __HAL_RCC_PWR_CLK_ENABLE();
 
-  SystemClock_Config();
-  /* System interrupt init*/
+    SystemClock_Config();
+    /* System interrupt init*/
 
-  /* USER CODE BEGIN MspInit 1 */
+    // init sram
+    Hw_Sram_Init();
 
-  /* USER CODE END MspInit 1 */
+    /* init led (gpio) */
+    led_cfg();
 }
 
 
