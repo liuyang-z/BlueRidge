@@ -127,6 +127,9 @@ Src/kernel/hal-driver/Src/stm32f4xx_hal_flash.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ex.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_flash_ramfunc.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_gpio.c \
+Src/kernel/hal-driver/Src/stm32f4xx_hal_spi.c \
+Src/kernel/hal-driver/Src/stm32f4xx_hal_tim.c \
+Src/kernel/hal-driver/Src/stm32f4xx_hal_tim_ex.c \
 Src/kernel/hal-driver/Src/stm32f4xx_ll_fsmc.c \
 Src/kernel/hal-driver/Src/stm32f4xx_hal_sram.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c \
@@ -142,6 +145,8 @@ Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_unistd.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c \
 Src/driver/gpio/led.c \
 Src/driver/fsmc/sram.c \
+Src/driver/spi/m25p16.c \
+Src/driver/tim/hal_tick.c \
 Src/user/stm32f4xx_it.c \
 Src/user/bspInit.c \
 Src/user/user_main.c
