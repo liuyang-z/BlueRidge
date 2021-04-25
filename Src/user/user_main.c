@@ -5,7 +5,9 @@
 
 #include "stm32f4xx.h"
 #include "kernel/core/_log.h"
+#include "kernel/core/_malloc.h"
 #include "driver/gpio/led.h"
+#include "driver/spi/m25p16.h"
 
 /* Global Defines *****************************************************************/
 size_t thread_test_exit = 0;
@@ -47,11 +49,47 @@ void* user_main(void *arg) {
     pthread_t blink_c;
     pthread_t blink_d;
 
-    float a=2.1,b;
+    uint32_t flash_id = 0;
+    if(m25p16_read_id(&flash_id) != HAL_OK) {
+        LOGE("read flash error.");
+    } else {
+        LOGI("flash id: %x", flash_id);
+    }
 
-	a=2.3*3.1;
-	b=a*12;
-	a=b/3.3;
+
+
+    uint8_t size = 35;
+    uint8_t* send = P_MALLOC(size);
+    uint8_t* recv = P_MALLOC(size);
+
+    if(send == NULL || recv == NULL) return NULL;
+
+    for(int i = 0; i < size; i++) {
+        send[i] = i;
+    }
+
+    uint32_t address = 0x0;
+    if(m25p16_erase_sector(address) != HAL_OK) {
+        LOGE("erase filure.");
+    }
+
+
+    uint32_t start = HAL_GetTick();
+    // if(m25p16_write_page(address, send, size) != HAL_OK) {
+    //     LOGE("write filure.");
+    // }
+    HAL_Delay(100);
+    uint32_t stop = HAL_GetTick();
+
+    if(m25p16_read(address, recv, size) != HAL_OK) {
+        LOGE("read filure.");
+    }
+
+    for(int idx = 0; idx < size; idx++) {
+        LOGI("%d", recv[idx]);
+    }
+
+    LOGW("write time: %d.", stop - start);
 
     struct led_s led_a = { 0 };
     struct led_s led_b = { 0 };

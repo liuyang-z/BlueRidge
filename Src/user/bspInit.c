@@ -7,6 +7,7 @@
 
 #include "driver/fsmc/sram.h"
 #include "driver/gpio/led.h"
+#include "driver/spi/m25p16.h"
 
 /* Functions prototypes ***********************************************************/
 void    Error_Handler   (char *file, uint32_t line);
@@ -61,7 +62,6 @@ static void SystemClock_Config(void)
 ***********************************************************************************/
 void HAL_MspInit(void)
 {
-
     __HAL_RCC_SYSCFG_CLK_ENABLE();
     __HAL_RCC_PWR_CLK_ENABLE();
 
@@ -71,8 +71,11 @@ void HAL_MspInit(void)
     // init sram
     Hw_Sram_Init();
 
-    /* init led (gpio) */
+    // init led (gpio)
     led_cfg();
+
+    // init n25p16 nor flash
+    m25p16_drv_init();
 }
 
 /* OS_Init *************************************************************************
