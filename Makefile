@@ -144,7 +144,7 @@ Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_timer.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_unistd.c \
 Src/lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c \
 Src/driver/gpio/led.c \
-Src/driver/fsmc/sram.c \
+Src/driver/fsmc/is61wv102416.c \
 Src/driver/spi/m25p16.c \
 Src/driver/tim/hal_tick.c \
 Src/user/stm32f4xx_it.c \

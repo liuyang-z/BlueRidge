@@ -5,7 +5,7 @@
 #include "bspMap.h"
 #include "FreeRTOS_POSIX/pthread.h"
 
-#include "driver/fsmc/sram.h"
+#include "driver/fsmc/is61wv102416.h"
 #include "driver/gpio/led.h"
 #include "driver/spi/m25p16.h"
 
