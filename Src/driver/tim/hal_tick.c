@@ -51,11 +51,14 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 	uint32_t prescaler_value = 0;
 	uint32_t period_value = 0;
 
-	if(_g_hal_tick.status == 0) {
+	do {
+		if(_g_hal_tick.status == 1)
+			return (HAL_OK);
+
 		_g_hal_tick.status = 1;
-	} else {
-		return HAL_OK;
-	}
+		break;
+
+	} while(1);
 
 	_g_hal_tick.priority = TickPriority;
 
