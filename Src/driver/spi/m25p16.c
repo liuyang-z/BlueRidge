@@ -131,7 +131,7 @@ static void _spi_hal_cfg(void)
 	spi_bus->handle.Init.NSS                 = SPI_NSS_SOFT;
 	spi_bus->handle.Init.BaudRatePrescaler   = SPI_BAUDRATEPRESCALER_2;
 	spi_bus->handle.Init.FirstBit            = SPI_FIRSTBIT_MSB;
-	spi_bus->handle.Init.TIMode			   = SPI_TIMODE_DISABLE;
+	spi_bus->handle.Init.TIMode              = SPI_TIMODE_DISABLE;
 	spi_bus->handle.Init.CRCCalculation      = SPI_CRCCALCULATION_DISABLE;
 
 	if(spi_bus->func.init(&spi_bus->handle)
@@ -147,23 +147,27 @@ static void _spi_hal_cfg(void)
 
 /* Low level Interface ************************************************************/
 
+/* __m25p16_data_recv **************************************************************
+*   Low Level 接口，调用 SPI 总线接收数据
+***********************************************************************************/
 HAL_StatusTypeDef __m25p16_data_recv(uint8_t* buff, uint32_t len)
 {
 	if(_g_m26p16_flash.spi_bus.func.recv(&_g_m26p16_flash.spi_bus.handle, buff, len, 300) != HAL_OK) {
 		LOGE("[SPI] Fail to receive data.");
-
 		return (HAL_ERROR);
 	}
 
 	return (HAL_OK);
 }
 
+/* __m25p16_data_send **************************************************************
+*   Low Level 接口，调用 SPI 总线发送数据
+***********************************************************************************/
 HAL_StatusTypeDef __m25p16_data_send(uint8_t* buff, uint32_t len)
 {
 	if(_g_m26p16_flash.spi_bus.func.send(&_g_m26p16_flash.spi_bus.handle, buff, len, 300)
 		!= HAL_OK) {
-		// debug info
-
+		LOGE("[SPI] Fail to send data.");
 		return (HAL_ERROR);
 	}
 
@@ -182,32 +186,24 @@ HAL_StatusTypeDef _m25p16_command_send(uint8_t command, uint8_t* data, uint8_t l
 {
 	uint8_t comm[1] = { command };
 
-	if(_g_m26p16_flash.spi_bus.func.send(
-			&_g_m26p16_flash.spi_bus.handle, comm, 1, 300
-		) != HAL_OK) {
-
-		// debug info
-		goto _failed;
+	if(__m25p16_data_send(comm, 1) != HAL_OK) {
+		goto _error;
 	}
 
 	if(data == NULL || len == 0) {
 		goto _success;
 	}
 
-	if(_g_m26p16_flash.spi_bus.func.send(
-			&_g_m26p16_flash.spi_bus.handle, data, len, 300
-		) != HAL_OK)  {
-
-		// debug info
-		goto _failed;
+	if(__m25p16_data_send(data, len) != HAL_OK)  {
+		goto _error;
 	}
 
 _success:
-	return HAL_OK;
+	return (HAL_OK);
 
-_failed:
-	LOGE("[SPI] Fail to send command: 0x%x.", *comm);
-	return HAL_ERROR;
+_error:
+	LOGE("%s, failed to send data", __func__);
+	return (HAL_ERROR);
 }
 
 /* _m25p16_write_enable ************************************************************
@@ -219,7 +215,7 @@ HAL_StatusTypeDef _m25p16_write_enable(void)
 
 	uint8_t command = COMMAND_INSTR_WREN;
 	if(_m25p16_command_send(command, NULL, 0)  != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to send command", __func__);
 		goto _error;
 	}
 
@@ -246,12 +242,12 @@ HAL_StatusTypeDef _m25p16_read_stat_reg(uint8_t* data)
 
 	uint8_t command = COMMAND_INSTR_RDSR;
 	if(_m25p16_command_send(command, NULL, 0) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to send command.", __func__);
 		goto _error;
 	}
 
 	if(__m25p16_data_recv(data, 1) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to receive data.", __func__);
 		goto _error;
 	}
 
@@ -275,7 +271,7 @@ HAL_StatusTypeDef _m25p16_wait_flash_until_to(uint32_t timeout)
 
 	do {
 		if(_m25p16_read_stat_reg(&status_reg) != HAL_OK) {
-			// debug info
+			LOGE("%s, failed to read stat reg.", __func__);
 			goto _error;
 		}
 
@@ -286,7 +282,7 @@ HAL_StatusTypeDef _m25p16_wait_flash_until_to(uint32_t timeout)
 	} while(HAL_GetTick() - tick_old < to);
 
 	if(HAL_GetTick() - tick_old >= to) {
-		// debug info
+		LOGE("%s, check flash busy, and timeout.", __func__);
 		goto _error;
 	}
 
@@ -308,13 +304,13 @@ HAL_StatusTypeDef _m25p16_read_id(uint8_t* buff, uint8_t len)
 	// send command
 	uint8_t command = COMMAND_INSTR_RDID;
 	if(_m25p16_command_send(command, NULL, 0) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to send command", __func__);
 		goto _error;
 	}
 
 	// read data
 	if(__m25p16_data_recv(buff, len) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to receive data.", __func__);
 		goto _error;
 	}
 
@@ -339,17 +335,20 @@ HAL_StatusTypeDef _m25p16_read_data(uint8_t* address, uint8_t* buff, uint32_t le
 	// 发送快速读取指令，并附带有三个字节的 Flash 偏移地址
 	uint8_t command = COMMAND_INSTR_FAST_READ;
 	if(_m25p16_command_send(command, address, 3) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to send command", __func__);
 		goto _error;
 	}
 
 	// 发送一个字节的 Dummy 时钟
 	uint8_t dummy = { 0 };
-	__m25p16_data_send(&dummy, 1);
+	if(__m25p16_data_send(&dummy, 1) != HAL_OK) {
+		LOGE("%s, failed to send data.", __func__);
+		goto _error;
+	}
 
 	// 开始接收指定长度的数据
 	if(__m25p16_data_recv(buff, len) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to receive data.", __func__);
 		goto _error;
 	}
 
@@ -367,30 +366,30 @@ _error:
 HAL_StatusTypeDef _m25p16_erase_sector(uint8_t* address)
 {
 	if(_m25p16_write_enable() != HAL_OK) {
-		// debug info
-		goto _error;
+		LOGE("%s, failed to write enable.");
+		goto _error2;
 	}
 
 	_g_m26p16_flash.spi_bus.func.cs_low();
 
 	uint8_t command = COMMAND_INSTR_SE;
 	if(_m25p16_command_send(command, address, 3) != HAL_OK) {
-		_g_m26p16_flash.spi_bus.func.cs_high();
-
-		// debug info
+		LOGE("%s, failed to send command", __func__);
 		goto _error;
 	}
 
 	_g_m26p16_flash.spi_bus.func.cs_high();
 
-	if(_m25p16_wait_flash_until_to(100) != HAL_OK) {
-		// debug info
-		goto _error;
+	if(_m25p16_wait_flash_until_to(400) != HAL_OK) {
+		LOGE("%s, check flash busy, and timeout.", __func__);
+		goto _error2;
 	}
 
 	return (HAL_OK);
 
 _error:
+	_g_m26p16_flash.spi_bus.func.cs_high();
+_error2:
 	return (HAL_ERROR);
 }
 
@@ -400,30 +399,30 @@ _error:
 HAL_StatusTypeDef _m25p16_erase_bulk(void)
 {
 	if(_m25p16_write_enable() != HAL_OK) {
-		// debug info
-		goto _error;
+		LOGE("%s, failed to write enable.");
+		goto _error2;
 	}
 
 	_g_m26p16_flash.spi_bus.func.cs_low();
 
 	uint8_t command = COMMAND_INSTR_BE;
 	if(_m25p16_command_send(command, NULL, 0) != HAL_OK) {
-		_g_m26p16_flash.spi_bus.func.cs_high();
-
-		// debug info
+		LOGE("%s, failed to send command", __func__);
 		goto _error;
 	}
 
 	_g_m26p16_flash.spi_bus.func.cs_high();
 
-	if(_m25p16_wait_flash_until_to(100) != HAL_OK) {
-		// debug info
-		goto _error;
+	if(_m25p16_wait_flash_until_to(20*1000) != HAL_OK) {
+		LOGE("%s, check flash busy, and timeout.", __func__);
+		goto _error2;
 	}
 
 	return (HAL_OK);
 
 _error:
+	_g_m26p16_flash.spi_bus.func.cs_high();
+_error2:
 	return (HAL_ERROR);
 }
 
@@ -436,7 +435,7 @@ _error:
 HAL_StatusTypeDef _m25p16_page_program(uint8_t* address, uint8_t* buff, uint32_t len)
 {
 	if(_m25p16_write_enable() != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to write enable.");
 		goto _error2;
 	}
 
@@ -444,19 +443,19 @@ HAL_StatusTypeDef _m25p16_page_program(uint8_t* address, uint8_t* buff, uint32_t
 
 	uint8_t command = COMMAND_INSTR_PP;
 	if(_m25p16_command_send(command, address, 3) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to send command", __func__);
 		goto _error;
 	}
 
 	if(__m25p16_data_send(buff, len) != HAL_OK) {
-		// debug info
+		LOGE("%s, failed to send data.", __func__);
 		goto _error;
 	}
 
 	_g_m26p16_flash.spi_bus.func.cs_high();
 
-	if(_m25p16_wait_flash_until_to(800) != HAL_OK) {
-		// debug info
+	if(_m25p16_wait_flash_until_to(400) != HAL_OK) {
+		LOGE("%s, check flash busy, and timeout.", __func__);
 		goto _error2;
 	}
 
@@ -637,7 +636,7 @@ HAL_StatusTypeDef m25p16_write(uint32_t address, uint8_t* buff, uint32_t len)
 
 		if(m25p16_write_page(current_addr, buff_pos, tmp_len)
 			!= HAL_OK) {
-			// debug info
+			LOGE("%s, failed to write page.", __func__);
 			goto _error;
 		}
 

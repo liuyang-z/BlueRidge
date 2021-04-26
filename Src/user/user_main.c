@@ -56,11 +56,9 @@ void* user_main(void *arg) {
         LOGI("flash id: %x", flash_id);
     }
 
-
-
     uint8_t size = 35;
-    uint8_t* send = P_MALLOC(size);
-    uint8_t* recv = P_MALLOC(size);
+    uint8_t* send = Kernel_MALLOC(size);
+    uint8_t* recv = Kernel_MALLOC(size);
 
     if(send == NULL || recv == NULL) return NULL;
 
@@ -73,11 +71,10 @@ void* user_main(void *arg) {
         LOGE("erase filure.");
     }
 
-
     uint32_t start = HAL_GetTick();
-    // if(m25p16_write_page(address, send, size) != HAL_OK) {
-    //     LOGE("write filure.");
-    // }
+    if(m25p16_write_page(address, send, size) != HAL_OK) {
+        LOGE("write filure.");
+    }
     HAL_Delay(100);
     uint32_t stop = HAL_GetTick();
 
@@ -90,6 +87,9 @@ void* user_main(void *arg) {
     }
 
     LOGW("write time: %d.", stop - start);
+
+    Kernel_FREE(send);
+    Kernel_FREE(recv);
 
     struct led_s led_a = { 0 };
     struct led_s led_b = { 0 };
