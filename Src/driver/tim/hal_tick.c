@@ -31,7 +31,7 @@ _hal_tick _g_hal_tick = {
 
 
 /* HAL_TICK_IRQHandler *************************************************************
-*   TIM7 ÖĞ¶Ï´¦Àíº¯Êı½Ó¿Ú
+*   TIM7 ä¸­æ–­å¤„ç†å‡½æ•°æ¥å£
 ***********************************************************************************/
 void HAL_TICK_IRQHandler()
 {
@@ -39,7 +39,7 @@ void HAL_TICK_IRQHandler()
 }
 
 /* tim_period_elapse ***************************************************************
-*   »Øµ÷º¯Êı called in irq handler
+*   å›è°ƒå‡½æ•° called in irq handler
 ***********************************************************************************/
 void tim_period_elapse(TIM_HandleTypeDef *htim)
 {
@@ -48,7 +48,7 @@ void tim_period_elapse(TIM_HandleTypeDef *htim)
 }
 
 /* tim_msp_init ********************************************************************
-*   »Øµ÷º¯Êı called by HAL_TIM_Base_Init()
+*   å›è°ƒå‡½æ•° called by HAL_TIM_Base_Init()
 ***********************************************************************************/
 void tim_msp_init(TIM_HandleTypeDef *htim)
 {
@@ -59,7 +59,7 @@ void tim_msp_init(TIM_HandleTypeDef *htim)
 }
 
 /* HAL_InitTick ********************************************************************
-*   Ç¿ÒıÓÃ½Ó¿Ú£¬ÓÃÓÚ³õÊ¼»¯ Hal Tick ¶¨Ê±Æ÷£¬´Ë½Ó¿ÚĞèÒª³õÊ¼»¯ÏµÍ³Ê±ÖÓºóµ÷ÓÃ
+*   å¼ºå¼•ç”¨æ¥å£ï¼Œç”¨äºåˆå§‹åŒ– Hal Tick å®šæ—¶å™¨ï¼Œæ­¤æ¥å£éœ€è¦åˆå§‹åŒ–ç³»ç»Ÿæ—¶é’Ÿåè°ƒç”¨
 ***********************************************************************************/
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 {
@@ -95,14 +95,14 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 	hal_tick_tim->Init.ClockDivision        = TIM_CLOCKDIVISION_DIV1;
 	hal_tick_tim->Init.CounterMode          = TIM_COUNTERMODE_UP;
 
-	// ×¢Òâ»Øµ÷×¢²áµÄË³Ğò
+	// æ³¨æ„å›è°ƒæ³¨å†Œçš„é¡ºåº
 	HAL_TIM_RegisterCallback(hal_tick_tim, HAL_TIM_BASE_MSPINIT_CB_ID, tim_msp_init);
 
 	if(HAL_TIM_Base_Init(hal_tick_tim) != HAL_OK) {
 		return HAL_ERROR;
 	}
 
-	// ÖĞ¶ÏÏà¹ØµÄ»Øµ÷ÒªÔÚ³õÊ¼»¯Ö®ºó½øĞĞ
+	// ä¸­æ–­ç›¸å…³çš„å›è°ƒè¦åœ¨åˆå§‹åŒ–ä¹‹åè¿›è¡Œ
 	HAL_TIM_RegisterCallback(hal_tick_tim, HAL_TIM_PERIOD_ELAPSED_CB_ID, tim_period_elapse);
 
 	HAL_TIM_Base_Start_IT(hal_tick_tim);

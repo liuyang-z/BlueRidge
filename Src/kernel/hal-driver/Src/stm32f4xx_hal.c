@@ -173,8 +173,8 @@ HAL_StatusTypeDef HAL_Init(void)
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
   /* Use systick as time base source and configure 1ms tick (default clock after Reset is HSI) */
-  /* HAL Tick Ê¹ÓÃ TIM ¶¨Ê±Æ÷Ìæ»»Ä¬ÈÏµÄ Systick£¬Òò¶ø¶ÔÓÚ Hal Tick µÄ³õÊ¼»¯¹¤×÷·ÅÖÃµ½ÏµÍ³Ê±ÖÓ³õÊ¼»¯Ö®ºó½øĞĞ¡£ */
-  /* µ÷ÓÃ SystemClock_Config() ³õÊ¼»¯ÏµÍ³Ê±ÖÓÊ±£¬»áÔÙ´Îµ÷ÓÃ HAL_InitTick() ½Ó¿Ú */
+  /* HAL Tick ä½¿ç”¨ TIM å®šæ—¶å™¨æ›¿æ¢é»˜è®¤çš„ Systickï¼Œå› è€Œå¯¹äº Hal Tick çš„åˆå§‹åŒ–å·¥ä½œæ”¾ç½®åˆ°ç³»ç»Ÿæ—¶é’Ÿåˆå§‹åŒ–ä¹‹åè¿›è¡Œã€‚ */
+  /* è°ƒç”¨ SystemClock_Config() åˆå§‹åŒ–ç³»ç»Ÿæ—¶é’Ÿæ—¶ï¼Œä¼šå†æ¬¡è°ƒç”¨ HAL_InitTick() æ¥å£ */
   // HAL_InitTick(TICK_INT_PRIORITY);
 
   /* Init the low level hardware */
