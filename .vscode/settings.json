@@ -1,7 +1,7 @@
 {
-    "files.associations": {
-        "stm32f4xx_hal_sram.h": "c",
-        "is61wv102416.h": "c"
-    },
-    "files.encoding": "utf8"
+    "files.encoding": "utf8",
+    "files.eol": "\n",
+    "files.trimTrailingWhitespace": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
 }
