@@ -1,4 +1,8 @@
 
+.vscode/.cortex-debug.registers.state.json
+.vscode/.cortex-debug.peripherals.state.json
+.vscode/settings.json
+
 /Build/*.d
 /Build/*.o
 /Build/*.lst
