@@ -380,7 +380,7 @@ HAL_StatusTypeDef _m25p16_erase_sector(uint8_t* address)
 
 	_g_m26p16_flash.spi_bus.func.cs_high();
 
-	if(_m25p16_wait_flash_until_to(400) != HAL_OK) {
+	if(_m25p16_wait_flash_until_to(800) != HAL_OK) {
 		LOGE("%s, check flash busy, and timeout.", __func__);
 		goto _error2;
 	}
@@ -454,7 +454,7 @@ HAL_StatusTypeDef _m25p16_page_program(uint8_t* address, uint8_t* buff, uint32_t
 
 	_g_m26p16_flash.spi_bus.func.cs_high();
 
-	if(_m25p16_wait_flash_until_to(400) != HAL_OK) {
+	if(_m25p16_wait_flash_until_to(800) != HAL_OK) {
 		LOGE("%s, check flash busy, and timeout.", __func__);
 		goto _error2;
 	}
