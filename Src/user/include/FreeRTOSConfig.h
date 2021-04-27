@@ -63,7 +63,7 @@ extern "C" {
 #define configTICK_RATE_HZ                          ( 1000 )
 #define configCPU_CLOCK_HZ                          SystemCoreClock
 #define configMAX_PRIORITIES                        ( 5 )
-#define configMINIMAL_STACK_SIZE                    ( ( unsigned short ) 320 )
+#define configMINIMAL_STACK_SIZE                    ( ( unsigned short ) 420 )
 #define configTOTAL_HEAP_SIZE                       ( ( size_t ) ( 64 * 1024 ) )
 #define configMAX_TASK_NAME_LEN                     ( 15 )
 #define configIDLE_SHOULD_YIELD                     1
